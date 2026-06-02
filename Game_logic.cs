@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+
 namespace LiarsDice
 {
     public class Game
@@ -15,7 +18,21 @@ namespace LiarsDice
             {
                 Console.Clear();
                 PrintDice(dice);
+                Label_input:
+                Console.WriteLine("write \"Bid\" to make a higher bid \n write \"Liar\" to call the bluff");
+                string input = Console.ReadLine();
+                if(input == "Bid"){
                 currentBid = GetPlayerBid(currentBid); 
+                }
+                else if(input == "Liar"){
+                    Console.WriteLine("remember to implement DAVID, i swear to god, if you don't do this, then we're both fucked");
+                }
+                else
+                {
+                   Console.WriteLine("Please enter a valid input");
+                   goto Label_input;
+                }
+
 
             }
         }
