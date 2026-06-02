@@ -7,7 +7,31 @@ namespace LiarsDice
             int[] dice = new int[5];
             RollDice(dice);
             PrintDice(dice);
-            
+
+            int[] currentBid = new int[2];
+            while (true)
+            {
+                currentBid = GetPlayerBid(); 
+            }
+        }
+        public static int[] GetPlayerBid()
+        {
+            Console.WriteLine("Enter your bid (quantity and face value): ");
+            string input = Console.ReadLine();
+            string[] parts = input.Split(' ');
+            try{
+            if (int.Parse(parts[1]) >= 7)
+                {
+                    throw new Exception();
+                }
+            return new int[]{int.Parse(parts[0]), int.Parse(parts[1])};
+            }
+            catch
+            {
+                Console.WriteLine("Invalid input. Please enter a quantity and a valid face value separated by a space.");
+                return GetPlayerBid();
+            }
+
         }
                 public static void PrintDice(int[] dice)
         {
