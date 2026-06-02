@@ -8,11 +8,15 @@ namespace LiarsDice
             RollDice(dice);
 
             int[] currentBid = {0,0};
+            Console.WriteLine("make the original bid!");
+            currentBid = GetPlayerBid(currentBid); 
+
             while (true)
             {
                 Console.Clear();
                 PrintDice(dice);
                 currentBid = GetPlayerBid(currentBid); 
+
             }
         }
         public static int[] GetPlayerBid(int[] currentBid)
