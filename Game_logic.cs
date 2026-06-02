@@ -7,15 +7,15 @@ namespace LiarsDice
             int[] dice = new int[5];
             RollDice(dice);
 
-            int[] currentBid = new int[2];
+            int[] currentBid = {0,0};
             while (true)
             {
                 Console.Clear();
                 PrintDice(dice);
-                currentBid = GetPlayerBid(); 
+                currentBid = GetPlayerBid(currentBid); 
             }
         }
-        public static int[] GetPlayerBid()
+        public static int[] GetPlayerBid(int[] currentBid)
         {
             try{
             Console.WriteLine("Enter your bid (quantity and face value): ");
@@ -26,6 +26,10 @@ namespace LiarsDice
                 {
                     throw new Exception();
                 }
+            if (int.Parse(parts[0]) <= currentBid[0] && int.Parse(parts[1]) <= currentBid[1])
+                {
+                    throw new Exception();
+                }
 
             return new int[]{int.Parse(parts[0]), int.Parse(parts[1])};
 
@@ -33,7 +37,7 @@ namespace LiarsDice
             catch
             {
                 Console.WriteLine("Invalid input. Please enter a quantity and a valid face value separated by a space.");
-                return GetPlayerBid();
+                return GetPlayerBid(currentBid);
             }
 
         }
