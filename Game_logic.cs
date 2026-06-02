@@ -18,23 +18,32 @@ namespace LiarsDice
             {
                 Console.Clear();
                 PrintDice(dice);
-                Label_input:
+                string action = return_action();
+                if (action == "Bid")
+                {
+                    currentBid = GetPlayerBid(currentBid);
+                }
+                else if (action == "Liar")
+                {
+                    Console.WriteLine("REMEBER TO IMPLEMENT DAVID, please for the love of all that is holy");
+                    break;
+                }
+            }
+        }
+        public static string return_action()
+        {
                 Console.WriteLine("write \"Bid\" to make a higher bid \n write \"Liar\" to call the bluff");
                 string input = Console.ReadLine();
-                if(input == "Bid"){
-                currentBid = GetPlayerBid(currentBid); 
-                }
-                else if(input == "Liar"){
-                    Console.WriteLine("remember to implement DAVID, i swear to god, if you don't do this, then we're both fucked");
+                if (input == "Bid" || input == "Liar")
+                {
+                    return input;
                 }
                 else
                 {
-                   Console.WriteLine("Please enter a valid input");
-                   goto Label_input;
-                }
+                    Console.WriteLine("Invalid input. Please enter \"Bid\" or \"Liar\".");
+                    return return_action();
+                }    
 
-
-            }
         }
         public static int[] GetPlayerBid(int[] currentBid)
         {
