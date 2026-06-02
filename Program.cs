@@ -1,2 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("welcome to liars dice! ඞඞඞ");
+﻿using LiarsDice;
+
+class Program
+    {
+        static void Main()
+        {
+// See https://aka.ms/new-console-template for more information
+            Console.WriteLine("welcome to liars dice! ඞඞඞ");
+            Game.Start();
+        }
+    }
