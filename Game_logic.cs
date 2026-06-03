@@ -9,6 +9,8 @@ namespace LiarsDice
         {
             int[] dice = new int[5];
             RollDice(dice);
+            int[] diceComputer = new int[5];
+            RollDice(diceComputer);
 
             int[] currentBid = {0,0};
             Console.WriteLine("make the original bid!");
@@ -25,10 +27,19 @@ namespace LiarsDice
                 }
                 else if (action == "Liar")
                 {
-                    Console.WriteLine("REMEBER TO IMPLEMENT DAVID, please for the love of all that is holy");
+                    Liar_choice(currentBid, dice, diceComputer);
                     break;
                 }
             }
+        }
+        public static void Liar_choice(int[] Human_bid, int [] dice_player, int[] dice_Computer)
+        {
+            int[] dicepool = dice_player.Concat(dice_player).ToArray();
+            foreach(int i in dicepool)
+            {
+                Console.WriteLine(dicepool[i]);
+            }
+            
         }
         public static string return_action()
         {
