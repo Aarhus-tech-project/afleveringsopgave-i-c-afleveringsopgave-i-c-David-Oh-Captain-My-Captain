@@ -7,12 +7,15 @@ namespace LiarsDice
     {
     public static void Start()
         {
+            const string player = "player";
+            const string computer = "computer";
             int[] dice = new int[5];
             RollDice(dice);
             int[] diceComputer = new int[5];
             RollDice(diceComputer);
 
             int[] currentBid = {0,0};
+            PrintDice(dice);
             Console.WriteLine("make the original bid!");
             currentBid = GetPlayerBid(currentBid); 
 
@@ -20,31 +23,43 @@ namespace LiarsDice
             {
                 Console.Clear();
                 PrintDice(dice);
-                string action = return_action();
+                string action = return_player_action();
                 if (action == "Bid")
                 {
                     currentBid = GetPlayerBid(currentBid);
                 }
                 else if (action == "Liar")
                 {
-                    bool if_winner_called = Liar_choice(currentBid, dice, diceComputer);
-                    if (if_winner_called== true)
+                    resolve_Liar(action, currentBid, dice, diceComputer, player);
+                }
+                else
+                {
+                    Console.WriteLine("how did we get here? - we are in the main game loop");
+                }
+
+            }
+        }
+                
+
+    
+        public static void resolve_Liar(string action, int[] currentBid, int[] dice, int[] diceComputer, string resolver)
+        {
+        
+                    bool Is_DicePool_larger_than_Currentbid = Liar_choice(currentBid, dice, diceComputer);
+                    if (Is_DicePool_larger_than_Currentbid == false)
                     {
-                        Console.WriteLine("CONGRATS ON WINNING");
+                        Console.WriteLine($"CONGRATS ON WINNING, {resolver} wins!");
                     }
-                    else if (if_winner_called == true)
+                    else if (Is_DicePool_larger_than_Currentbid == true)
                     {
-                         Console.WriteLine("CONGRATS ON LOOSING");
+                         Console.WriteLine($"CONGRATS ON LOOSING, {resolver} loses!");
                     }
                     else
                     {
                         Console.WriteLine("i have no idea who won, i am truly sorry for my incompentance, please do report. For the developer, this comment is under Game.Start");
                     }
                     //Console.WriteLine($"bool is {if_winner_called}");
-                    break;
-                }
-
-            }
+                    Environment.Exit(0);
         }
 
         public static bool Liar_choice(int[] bid, int [] dice_player, int[] dice_Computer)
@@ -76,7 +91,7 @@ namespace LiarsDice
             }
             
         }
-        public static string return_action()
+        public static string return_player_action()
         {
                 Console.WriteLine("write \"Bid\" to make a higher bid \n write \"Liar\" to call the bluff");
                 string input = Console.ReadLine();
@@ -87,7 +102,7 @@ namespace LiarsDice
                 else
                 {
                     Console.WriteLine("Invalid input. Please enter \"Bid\" or \"Liar\".");
-                    return return_action();
+                    return return_player_action();
                 }    
 
         }
