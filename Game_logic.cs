@@ -5,7 +5,12 @@ namespace LiarsDice
 {
     public class Game
     {
-        public static int dicecount = 5;
+    public static int dicecount = 5;
+    public class Bid
+    {
+        public int quantity;
+        public int faceValue;
+    }
     public static void Start()
         {
 
@@ -15,7 +20,7 @@ namespace LiarsDice
             int[] diceComputer = new int[dicecount];
             RollDice(diceComputer);
 
-            int[] currentBid = {0,0};
+            Bid currentBid = new Bid { quantity = 0, faceValue = 0 }; // currentBid[0] is the quantity, currentBid[1] is the face value
             PrintDice(dice);
             Console.WriteLine("make the original bid!");
             currentBid = GetPlayerBid(currentBid); 
@@ -26,7 +31,7 @@ namespace LiarsDice
                 string computerAction = ComputerTurn(currentBid, diceComputer);
                 if (computerAction == "Bid")
                 {
-                    currentBid = new int[]{currentBid[0]+1, currentBid[1]};
+                    currentBid = new Bid { quantity = currentBid.quantity + 1, faceValue = currentBid.faceValue };
                 }
                 else if (computerAction == "Liar")
                 {
@@ -55,23 +60,23 @@ namespace LiarsDice
     
             }
         }
-        public static string ComputerTurn(int[] currentBid, int[] diceComputer)
+        public static string ComputerTurn(Bid currentBid, int[] diceComputer)
         {
             // This is a very basic implementation of the computer's turn. 
             // It will always bid one more than the current bid, and will call "Liar" if it thinks the current bid is unlikely to be true based on its own dice.
-            int computerBidQuantity = currentBid[0] + 1;
-            int computerBidFaceValue = currentBid[1];
+            int computerBidQuantity = currentBid.quantity + 1;
+            int computerBidFaceValue = currentBid.faceValue;
             int ComputerDiceCountOfCurrentFaceBid = 0;
             for (int i = 0; i < diceComputer.Length; i++)
             {
-                if (diceComputer[i] == currentBid[1])
+                if (diceComputer[i] == currentBid.faceValue)
                 {
                     ComputerDiceCountOfCurrentFaceBid++;
                 }
             }
-            if ( 1 + ComputerDiceCountOfCurrentFaceBid <= currentBid[0])
+            if ( 1 + ComputerDiceCountOfCurrentFaceBid <= currentBid.quantity)
             {
-                Console.WriteLine($"Computer has {ComputerDiceCountOfCurrentFaceBid} of {currentBid[1]}'s and calls Liar!");
+                Console.WriteLine($"Computer has {ComputerDiceCountOfCurrentFaceBid} of {currentBid.faceValue}'s and calls Liar!");
                 Console.WriteLine("Computer calls Liar!");
                 return "Liar";
             }
@@ -81,7 +86,7 @@ namespace LiarsDice
         }  
 
     
-        public static void resolve_Liar(string action, int[] currentBid, int[] dice, int[] diceComputer, string resolver)
+        public static void resolve_Liar(string action, Bid currentBid, int[] dice, int[] diceComputer, string resolver)
         {
         
             bool Is_DicePool_larger_than_Currentbid = Liar_choice_returns_winner(currentBid, dice, diceComputer);
@@ -100,7 +105,7 @@ namespace LiarsDice
             Environment.Exit(0);
         }
 
-        public static bool Liar_choice_returns_winner(int[] bid, int [] dice_player, int[] dice_Computer)
+        public static bool Liar_choice_returns_winner(Bid bid, int [] dice_player, int[] dice_Computer)
         {
             int dice_bid_count = 0;
             int[] dicepool = new int[dice_player.Length + dice_Computer.Length];
@@ -110,16 +115,16 @@ namespace LiarsDice
             for(int i = 0; i<dicepool.Length; i++)
             {
                 Console.WriteLine($"the {i+1}'nth dice reads {dicepool[i]}");
-                if(dicepool[i]== bid[1])
+                if(dicepool[i]== bid.faceValue)
                 {
                     dice_bid_count++;
                 }
             }
-            if(dice_bid_count < bid[0])
+            if(dice_bid_count < bid.quantity)
             {
                 return true;
             }
-            else if (dice_bid_count >= bid[0])
+            else if (dice_bid_count >= bid.quantity)
             {
                 return false;
             }
@@ -145,32 +150,33 @@ namespace LiarsDice
             }    
 
         }
-        public static int[] GetPlayerBid(int[] currentBid)
-        {
-            try{
-            Console.WriteLine("Enter your bid (quantity and face value): ");
-            string input = Console.ReadLine();
-            string[] parts = input.Split(' ');
-            
-            if (int.Parse(parts[1]) >= 7)
-                {
-                    throw new Exception();
-                }
-            if (int.Parse(parts[0]) <= currentBid[0] && int.Parse(parts[1]) <= currentBid[1])
-                {
-                    throw new Exception();
-                }
+       
+          public static Bid GetPlayerBid(Bid currentBid)
+{
+    try
+    {
+        Console.WriteLine("Enter your bid (quantity and face value): ");
+        string input = Console.ReadLine();
+        string[] parts = input.Split(' ');
 
-            return new int[]{int.Parse(parts[0]), int.Parse(parts[1])};
+        int qty = int.Parse(parts[0]);
+        int face = int.Parse(parts[1]);
 
-            }
-            catch
-            {
-                Console.WriteLine("Invalid input. Please enter a quantity and a valid face value separated by a space.");
-                return GetPlayerBid(currentBid);
-            }
+        if (face < 1 || face > 6)
+            throw new Exception();
 
-        }
+        if (qty <= currentBid.quantity && face <= currentBid.faceValue)
+            throw new Exception();
+
+        return new Bid { quantity = qty, faceValue = face };
+    }
+    catch
+    {
+        Console.WriteLine("Invalid input. Please enter a quantity and a valid face value separated by a space.");
+        return GetPlayerBid(currentBid);
+    }
+}
+
             public static void PrintDice(int[] dice)
         {
             for (int i = 0; i < dice.Length; i++)
