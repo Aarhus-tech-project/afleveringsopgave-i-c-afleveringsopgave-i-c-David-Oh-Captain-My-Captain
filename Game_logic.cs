@@ -36,11 +36,17 @@ namespace LiarsDice
                     {
                          Console.WriteLine("CONGRATS ON LOOSING");
                     }
+                    else
+                    {
+                        Console.WriteLine("i have no idea who won, i am truly sorry for my incompentance, please do report. For the developer, this comment is under Game.Start");
+                    }
                     //Console.WriteLine($"bool is {if_winner_called}");
                     break;
                 }
+
             }
         }
+
         public static bool Liar_choice(int[] bid, int [] dice_player, int[] dice_Computer)
         {
             int dice_bid_count = 0;
