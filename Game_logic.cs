@@ -5,13 +5,14 @@ namespace LiarsDice
 {
     public class Game
     {
+        public static int dicecount = 5;
     public static void Start()
         {
             const string player = "player";
             const string computer = "computer";
-            int[] dice = new int[5];
+            int[] dice = new int[dicecount];
             RollDice(dice);
-            int[] diceComputer = new int[5];
+            int[] diceComputer = new int[dicecount];
             RollDice(diceComputer);
 
             int[] currentBid = {0,0};
@@ -22,6 +23,21 @@ namespace LiarsDice
             while (true)
             {
                 Console.Clear();
+                string computerAction = ComputerTurn(currentBid, diceComputer);
+                if (computerAction == "Bid")
+                {
+                    currentBid = new int[]{currentBid[0]+1, currentBid[1]};
+                }
+                else if (computerAction == "Liar")
+                {
+                    resolve_Liar(computerAction, currentBid, dice, diceComputer, computer);
+                }
+                else
+                {
+                    Console.WriteLine("how did we get here? - we are in the main game loop");
+                }
+                Console.WriteLine("Press Enter to continue...");
+                Console.ReadLine();
                 PrintDice(dice);
                 string action = return_player_action();
                 if (action == "Bid")
@@ -36,10 +52,33 @@ namespace LiarsDice
                 {
                     Console.WriteLine("how did we get here? - we are in the main game loop");
                 }
-
+    
             }
         }
-                
+        public static string ComputerTurn(int[] currentBid, int[] diceComputer)
+        {
+            // This is a very basic implementation of the computer's turn. 
+            // It will always bid one more than the current bid, unless it has a good reason to call "Liar".
+            int computerBidQuantity = currentBid[0] + 1;
+            int computerBidFaceValue = currentBid[1];
+            int ComputerDiceCountOfCurrentFaceBid = 0;
+            for (int i = 0; i < diceComputer.Length; i++)
+            {
+                if (diceComputer[i] == currentBid[1])
+                {
+                    ComputerDiceCountOfCurrentFaceBid++;
+                }
+            }
+            if ( 1 + ComputerDiceCountOfCurrentFaceBid <= currentBid[0])
+            {
+                Console.WriteLine($"Computer has {ComputerDiceCountOfCurrentFaceBid} of {currentBid[1]}'s and calls Liar!");
+                Console.WriteLine("Computer calls Liar!");
+                return "Liar";
+            }
+            
+            Console.WriteLine($"Computer bids {computerBidQuantity} of {computerBidFaceValue}'s");
+            return "Bid";
+        }  
 
     
         public static void resolve_Liar(string action, int[] currentBid, int[] dice, int[] diceComputer, string resolver)
@@ -65,8 +104,9 @@ namespace LiarsDice
         public static bool Liar_choice(int[] bid, int [] dice_player, int[] dice_Computer)
         {
             int dice_bid_count = 0;
-            int[] dicepool = dice_player.Concat(dice_player).ToArray();
-
+            int[] dicepool = new int[dice_player.Length + dice_Computer.Length];
+            dice_player.CopyTo(dicepool, 0);
+            dice_Computer.CopyTo(dicepool, dice_player.Length);
 
             for(int i = 0; i<dicepool.Length; i++)
             {
