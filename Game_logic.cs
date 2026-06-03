@@ -32,12 +32,19 @@ namespace LiarsDice
                 }
             }
         }
-        public static void Liar_choice(int[] Human_bid, int [] dice_player, int[] dice_Computer)
+        public static void Liar_choice(int[] bid, int [] dice_player, int[] dice_Computer)
         {
+            int dice_bid_count = 0;
             int[] dicepool = dice_player.Concat(dice_player).ToArray();
-            foreach(int i in dicepool)
+
+
+            for(int i = 0; i<dicepool.Length; i++)
             {
-                Console.WriteLine(dicepool[i]);
+                Console.WriteLine($"the {dicepool[i]}'nth dice reads {i}");
+                if(dicepool[i]== bid[1])
+                {
+                    dice_bid_count++;
+                }
             }
             
         }
