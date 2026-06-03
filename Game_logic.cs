@@ -27,12 +27,12 @@ namespace LiarsDice
                 }
                 else if (action == "Liar")
                 {
-                    Liar_choice(currentBid, dice, diceComputer);
+                    bool if_winner_called = Liar_choice(currentBid, dice, diceComputer);
                     break;
                 }
             }
         }
-        public static void Liar_choice(int[] bid, int [] dice_player, int[] dice_Computer)
+        public static bool Liar_choice(int[] bid, int [] dice_player, int[] dice_Computer)
         {
             int dice_bid_count = 0;
             int[] dicepool = dice_player.Concat(dice_player).ToArray();
@@ -45,6 +45,19 @@ namespace LiarsDice
                 {
                     dice_bid_count++;
                 }
+            }
+            if(dice_bid_count < bid[0])
+            {
+                return false;
+            }
+            else if (dice_bid_count >= bid[0])
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("how did we get here? - we are in the liar_choice function");
+                return false;
             }
             
         }
