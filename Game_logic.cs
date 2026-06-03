@@ -8,8 +8,8 @@ namespace LiarsDice
         public static int dicecount = 5;
     public static void Start()
         {
-            const string player = "player";
-            const string computer = "computer";
+
+
             int[] dice = new int[dicecount];
             RollDice(dice);
             int[] diceComputer = new int[dicecount];
@@ -30,7 +30,7 @@ namespace LiarsDice
                 }
                 else if (computerAction == "Liar")
                 {
-                    resolve_Liar(computerAction, currentBid, dice, diceComputer, computer);
+                    resolve_Liar(computerAction, currentBid, dice, diceComputer, "computer");
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace LiarsDice
                 }
                 else if (action == "Liar")
                 {
-                    resolve_Liar(action, currentBid, dice, diceComputer, player);
+                    resolve_Liar(action, currentBid, dice, diceComputer, "player");
                 }
                 else
                 {
@@ -58,7 +58,7 @@ namespace LiarsDice
         public static string ComputerTurn(int[] currentBid, int[] diceComputer)
         {
             // This is a very basic implementation of the computer's turn. 
-            // It will always bid one more than the current bid, unless it has a good reason to call "Liar".
+            // It will always bid one more than the current bid, and will call "Liar" if it thinks the current bid is unlikely to be true based on its own dice.
             int computerBidQuantity = currentBid[0] + 1;
             int computerBidFaceValue = currentBid[1];
             int ComputerDiceCountOfCurrentFaceBid = 0;
@@ -84,24 +84,23 @@ namespace LiarsDice
         public static void resolve_Liar(string action, int[] currentBid, int[] dice, int[] diceComputer, string resolver)
         {
         
-                    bool Is_DicePool_larger_than_Currentbid = Liar_choice(currentBid, dice, diceComputer);
-                    if (Is_DicePool_larger_than_Currentbid == false)
-                    {
-                        Console.WriteLine($"CONGRATS ON WINNING, {resolver} wins!");
-                    }
-                    else if (Is_DicePool_larger_than_Currentbid == true)
-                    {
-                         Console.WriteLine($"CONGRATS ON LOOSING, {resolver} loses!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("i have no idea who won, i am truly sorry for my incompentance, please do report. For the developer, this comment is under Game.Start");
-                    }
-                    //Console.WriteLine($"bool is {if_winner_called}");
-                    Environment.Exit(0);
+            bool Is_DicePool_larger_than_Currentbid = Liar_choice_returns_winner(currentBid, dice, diceComputer);
+            if (Is_DicePool_larger_than_Currentbid == true)
+            {
+                Console.WriteLine($"CONGRATS ON WINNING, {resolver} wins!");
+            }
+            else if (Is_DicePool_larger_than_Currentbid == false)
+            {
+                Console.WriteLine($"CONGRATS ON LOOSING, {resolver} loses!");
+            }
+            else
+            {
+                Console.WriteLine("i have no idea who won, i am truly sorry for my incompentance, please do report. For the developer, this comment is under Game.Start");
+            }
+            Environment.Exit(0);
         }
 
-        public static bool Liar_choice(int[] bid, int [] dice_player, int[] dice_Computer)
+        public static bool Liar_choice_returns_winner(int[] bid, int [] dice_player, int[] dice_Computer)
         {
             int dice_bid_count = 0;
             int[] dicepool = new int[dice_player.Length + dice_Computer.Length];
@@ -118,11 +117,11 @@ namespace LiarsDice
             }
             if(dice_bid_count < bid[0])
             {
-                return false;
+                return true;
             }
             else if (dice_bid_count >= bid[0])
             {
-                return true;
+                return false;
             }
             else
             {
@@ -133,17 +132,17 @@ namespace LiarsDice
         }
         public static string return_player_action()
         {
-                Console.WriteLine("write \"Bid\" to make a higher bid \n write \"Liar\" to call the bluff");
-                string input = Console.ReadLine();
-                if (input == "Bid" || input == "Liar")
-                {
-                    return input;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid input. Please enter \"Bid\" or \"Liar\".");
-                    return return_player_action();
-                }    
+            Console.WriteLine("write \"Bid\" to make a higher bid \n write \"Liar\" to call the bluff");
+            string input = Console.ReadLine();
+            if (input == "Bid" || input == "Liar")
+            {
+                return input;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter \"Bid\" or \"Liar\".");
+                return return_player_action();
+            }    
 
         }
         public static int[] GetPlayerBid(int[] currentBid)
@@ -172,7 +171,7 @@ namespace LiarsDice
             }
 
         }
-                public static void PrintDice(int[] dice)
+            public static void PrintDice(int[] dice)
         {
             for (int i = 0; i < dice.Length; i++)
             {
