@@ -28,6 +28,15 @@ namespace LiarsDice
                 else if (action == "Liar")
                 {
                     bool if_winner_called = Liar_choice(currentBid, dice, diceComputer);
+                    if (if_winner_called== true)
+                    {
+                        Console.WriteLine("CONGRATS ON WINNING");
+                    }
+                    else if (if_winner_called == true)
+                    {
+                         Console.WriteLine("CONGRATS ON LOOSING");
+                    }
+                    //Console.WriteLine($"bool is {if_winner_called}");
                     break;
                 }
             }
@@ -40,7 +49,7 @@ namespace LiarsDice
 
             for(int i = 0; i<dicepool.Length; i++)
             {
-                Console.WriteLine($"the {dicepool[i]}'nth dice reads {i}");
+                Console.WriteLine($"the {i+1}'nth dice reads {dicepool[i]}");
                 if(dicepool[i]== bid[1])
                 {
                     dice_bid_count++;
