@@ -151,40 +151,40 @@ namespace LiarsDice
 
         }
        
-          public static Bid GetPlayerBid(Bid currentBid)
-{
-    try
-    {
-        Console.WriteLine("Enter your bid (quantity and face value): ");
-        string input = Console.ReadLine();
-        string[] parts = input.Split(' ');
+        public static Bid GetPlayerBid(Bid currentBid)
+        {
+            try
+            {
+                Console.WriteLine("Enter your bid (quantity and face value): ");
+                string input = Console.ReadLine();
+                string[] parts = input.Split(' ');
 
-        int qty = int.Parse(parts[0]);
-        int face = int.Parse(parts[1]);
+                int qty = int.Parse(parts[0]);
+                int face = int.Parse(parts[1]);
 
-        if (face < 1 || face > 6)
-            throw new Exception();
+                if (face < 1 || face > 6)
+                    throw new Exception();
 
-        if (qty <= currentBid.quantity && face <= currentBid.faceValue)
-            throw new Exception();
+                if (qty <= currentBid.quantity && face <= currentBid.faceValue)
+                    throw new Exception();
 
-        return new Bid { quantity = qty, faceValue = face };
-    }
-    catch
-    {
-        Console.WriteLine("Invalid input. Please enter a quantity and a valid face value separated by a space.");
-        return GetPlayerBid(currentBid);
-    }
-}
+                return new Bid { quantity = qty, faceValue = face };
+            }
+            catch
+            {
+                Console.WriteLine("Invalid input. Please enter a quantity and a valid face value separated by a space.");
+                return GetPlayerBid(currentBid);
+            }
+        }
 
-            public static void PrintDice(int[] dice)
+        public static void PrintDice(int[] dice)
         {
             for (int i = 0; i < dice.Length; i++)
             {
                 Console.WriteLine($"Die {i + 1}: {dice[i]}");
             }
         }
-            public static int[] RollDice(int[] dice)
+        public static int[] RollDice(int[] dice)
         {
             for (int i = 0; i < dice.Length; i++)
             {
